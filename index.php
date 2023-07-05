@@ -37,6 +37,11 @@ class Api
 				'method' => 'post',
 				'bodyType' => 'ConstructionStagesCreate'
 			],
+			'patch constructionStages/(:num)' => [
+				'class' => 'ConstructionStages',
+				'method' => 'patch',
+				'bodyType' => 'ConstructionStagesModify'
+			],
 			'delete constructionStages/(:num)' => [
 				'class' => 'ConstructionStages',
 				'method' => 'delete',
@@ -54,7 +59,7 @@ class Api
 				if (preg_match('#^'.$pattern.'$#i', "{$httpVerb} {$uri}", $matches)) {
 					$params = [];
 					array_shift($matches);
-					if ($httpVerb === 'post') {
+					if (in_array($httpVerb, ['post','patch'])) {
 						$data = json_decode(file_get_contents('php://input'));
 						$params = [new $target['bodyType']($data)];
 					}

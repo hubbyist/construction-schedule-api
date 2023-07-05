@@ -67,6 +67,36 @@ class ConstructionStages
 		]);
 		return $this->getSingle($this->db->lastInsertId());
 	}
+
+	public function patch(ConstructionStagesModify $data, int $id)
+	{
+		$columns = [
+			'name',
+			'start_date',
+			'end_date',
+			'duration',
+			'durationUnit',
+			'color',
+			'externalId',
+			'status',
+		];
+		$fields = [];
+		$values = ['id' => $id];
+		foreach ($columns as $column) {
+			if(isset($data->$column)){
+				$fields[] = "$column = :$column";
+				$values[] = $data->{$column};
+			}
+		}
+		$stmt = $this->db->prepare("
+			UPDATE construction_stages
+			SET " . implode(',', $fields) . "
+			WHERE ID = :id
+			");
+		$stmt->execute($values);
+		return $stmt->rowCount() ? $this->getSingle($id) : false;
+	}
+
 	public function delete(int $id)
 	{
 		$stmt = $this->db->prepare("
