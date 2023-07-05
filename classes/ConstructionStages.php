@@ -28,7 +28,7 @@ class ConstructionStages
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function getSingle($id)
+	public function getSingle(int $id)
 	{
 		$stmt = $this->db->prepare("
 			SELECT
