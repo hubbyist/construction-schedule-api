@@ -60,6 +60,7 @@ class Api
 				}
 			}
 
+			header('Content-Type: application/json');
 			echo json_encode($response, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 		}
 	}
