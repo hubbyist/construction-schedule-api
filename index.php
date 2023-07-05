@@ -37,6 +37,10 @@ class Api
 				'method' => 'post',
 				'bodyType' => 'ConstructionStagesCreate'
 			],
+			'delete constructionStages/(:num)' => [
+				'class' => 'ConstructionStages',
+				'method' => 'delete',
+			],
 		];
 
 		$response = [

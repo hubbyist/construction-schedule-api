@@ -67,4 +67,14 @@ class ConstructionStages
 		]);
 		return $this->getSingle($this->db->lastInsertId());
 	}
+	public function delete(int $id)
+	{
+		$stmt = $this->db->prepare("
+			UPDATE construction_stages
+			SET status = 'DELETED'
+			WHERE ID = :id AND status != 'DELETED'
+			");
+		$stmt->execute(['id' => $id]);
+		return $stmt->rowCount() ? true : false;
+	}
 }
