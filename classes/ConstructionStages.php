@@ -14,7 +14,7 @@ class ConstructionStages
 		$stmt = $this->db->prepare("
 			SELECT
 				ID as id,
-				name, 
+				name,
 				strftime('%Y-%m-%dT%H:%M:%SZ', start_date) as startDate,
 				strftime('%Y-%m-%dT%H:%M:%SZ', end_date) as endDate,
 				duration,
@@ -33,7 +33,7 @@ class ConstructionStages
 		$stmt = $this->db->prepare("
 			SELECT
 				ID as id,
-				name, 
+				name,
 				strftime('%Y-%m-%dT%H:%M:%SZ', start_date) as startDate,
 				strftime('%Y-%m-%dT%H:%M:%SZ', end_date) as endDate,
 				duration,
