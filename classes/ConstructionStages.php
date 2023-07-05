@@ -55,15 +55,20 @@ class ConstructionStages
 			    (name, start_date, end_date, duration, durationUnit, color, externalId, status)
 			    VALUES (:name, :start_date, :end_date, :duration, :durationUnit, :color, :externalId, :status)
 			");
+		try{
+			$entity = new ConstructionStagesEntity($data);
+		}catch(\Exception $Exception){
+			return $Exception->getMessage();
+		}
 		$stmt->execute([
-			'name' => $data->name,
-			'start_date' => $data->startDate,
-			'end_date' => $data->endDate,
-			'duration' => $data->duration,
-			'durationUnit' => $data->durationUnit,
-			'color' => $data->color,
-			'externalId' => $data->externalId,
-			'status' => $data->status,
+			'name' => $entity->name,
+			'start_date' => $entity->startDate,
+			'end_date' => $entity->endDate,
+			'duration' => $entity->duration,
+			'durationUnit' => $entity->durationUnit,
+			'color' => $entity->color,
+			'externalId' => $entity->externalId,
+			'status' => $entity->status,
 		]);
 		return $this->getSingle($this->db->lastInsertId());
 	}
@@ -80,12 +85,17 @@ class ConstructionStages
 			'externalId',
 			'status',
 		];
+		try{
+			$entity = new ConstructionStagesEntity($data);
+		}catch(\Exception $Exception){
+			return $Exception->getMessage();
+		}
 		$fields = [];
 		$values = ['id' => $id];
 		foreach ($columns as $column) {
-			if(isset($data->$column)){
+			if(isset($entity->$column)){
 				$fields[] = "$column = :$column";
-				$values[] = $data->{$column};
+				$values[] = $entity->{$column};
 			}
 		}
 		$stmt = $this->db->prepare("

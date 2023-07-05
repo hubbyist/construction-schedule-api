@@ -6,10 +6,10 @@ class ConstructionStagesCreate
 	public $startDate;
 	public $endDate;
 	public $duration;
-	public $durationUnit;
+	public $durationUnit = 'DAYS';
 	public $color;
 	public $externalId;
-	public $status;
+	public $status = 'NEW';
 
 	public function __construct($data) {
 
