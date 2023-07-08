@@ -1,22 +1,24 @@
 <?php
 require_once 'Autoloader.php';
 Autoloader::register();
-new Api();
+$database = (new Database())->init($path ?? __DIR__);
+if($populate ?? true){
+	$database->populate();
+}
+new Api($database);
 
-class Api
-{
+class Api {
+
 	private static $db;
 
-	public static function getDb()
-	{
+	public static function getDb(){
 		return self::$db;
 	}
 
-	public function __construct()
-	{
-		self::$db = (new Database())->init();
+	public function __construct(Database $database){
+		self::$db = $database->getDb();
 
-		$uri = strtolower(trim((string)$_SERVER['PATH_INFO'], '/'));
+		$uri = strtolower(trim((string) $_SERVER['PATH_INFO'], '/'));
 		$httpVerb = isset($_SERVER['REQUEST_METHOD']) ? strtolower($_SERVER['REQUEST_METHOD']) : 'cli';
 
 		$wildcards = [
@@ -76,7 +78,7 @@ class Api
 			}
 
 			header('Content-Type: application/json');
-			echo json_encode($response, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+			echo json_encode($response, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n";
 		}
 	}
 
