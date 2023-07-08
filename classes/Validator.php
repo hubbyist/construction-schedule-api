@@ -29,7 +29,7 @@ class Validator {
 	}
 
 	static function hexcodeofColor(string $code){
-		if(preg_match('#^([#][0-9A-F]{6}$#', $code, $matches))
+		if(preg_match('/^([#][0-9A-Fa-f]{6})$/', $code, $matches))
 		{
 			return true;
 		}
