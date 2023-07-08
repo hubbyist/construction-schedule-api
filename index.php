@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 require_once 'Autoloader.php';
 Autoloader::register();
 $database = (new Database())->init($path ?? __DIR__);
