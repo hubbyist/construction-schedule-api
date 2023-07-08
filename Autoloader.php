@@ -5,7 +5,7 @@ class Autoloader
 	public static function register()
 	{
 		spl_autoload_register(function ($class) {
-			$file = "classes/{$class}.php";
+			$file = __DIR__ . "/classes/{$class}.php";
 			if (file_exists($file)) {
 				require $file;
 				return true;

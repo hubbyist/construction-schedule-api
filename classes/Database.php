@@ -6,9 +6,9 @@ class Database
 
 	private $db;
 
-	public function init()
+	public function init(string $path)
 	{
-		$this->db = new PDO('sqlite:'.self::name.'.db', '', '', [
+		$this->db = new PDO('sqlite:' . $path . '/' . self::name . '.db', '', '', [
 			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 		]);
 		$this->createTables();
@@ -32,6 +32,12 @@ class Database
 	private function loadData()
 	{
 		$sql = file_get_contents(__DIR__ . '/../database/data.sql');
+		$this->db->exec($sql);
+	}
+
+	public function truncate()
+	{
+		$sql = file_get_contents(__DIR__ . '/../database/truncate.sql');
 		$this->db->exec($sql);
 	}
 
