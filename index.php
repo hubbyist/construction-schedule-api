@@ -54,23 +54,56 @@ class Api
 
 		if ($uri) {
 
-			foreach ($routes as $pattern => $target) {
-				$pattern = str_replace(array_keys($wildcards), array_values($wildcards), $pattern);
-				if (preg_match('#^'.$pattern.'$#i', "{$httpVerb} {$uri}", $matches)) {
-					$params = [];
-					array_shift($matches);
-					if (in_array($httpVerb, ['post','patch'])) {
-						$data = json_decode(file_get_contents('php://input'));
-						$params = [new $target['bodyType']($data)];
+			try {
+				foreach($routes as $pattern => $target){
+					$pattern = str_replace(array_keys($wildcards), array_values($wildcards), $pattern);
+					if(preg_match('#^' . $pattern . '$#i', "{$httpVerb} {$uri}", $matches))
+					{
+						$params = [];
+						array_shift($matches);
+						if(in_array($httpVerb, ['post', 'patch']))
+						{
+							$data = json_decode(file_get_contents('php://input'));
+							$params = [new $target['bodyType']($data)];
+						}
+						$params = array_merge($params, $matches);
+						$response = call_user_func_array([new $target['class'], $target['method']], $params);
+						break;
 					}
-					$params = array_merge($params, $matches);
-					$response = call_user_func_array([new $target['class'], $target['method']], $params);
-					break;
 				}
+			}catch(Throwable $Throwable) {
+				$response = ['error' => $this->error($Throwable)];
 			}
 
 			header('Content-Type: application/json');
 			echo json_encode($response, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 		}
+	}
+
+	protected function error(Throwable $Throwable){
+		$trace = $Throwable->getTrace();
+		$message = $Throwable->getMessage();
+		$class = get_class($Throwable);
+		switch($class) {
+			case 'TypeError':
+				if(str_ends_with($trace[0]['class'], 'Entity'))
+				{
+					http_response_code(400);
+					$error = $trace[0]['function'] . ' ' . preg_filter("#^.*?(must be of type.*), called in.*$#", '$1', $message);
+				}
+				else
+				{
+					$error = 'Malformed Input in ' . $trace[0]['class'] . '::' . $trace[0]['function'];
+				}
+				break;
+			case 'DomainException':
+				http_response_code(400);
+				$error = $message;
+				break;
+			default:
+				http_response_code(500);
+				$error = 'Unknown error occured';
+		};
+		return $error . '.';
 	}
 }

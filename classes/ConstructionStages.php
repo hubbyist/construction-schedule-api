@@ -55,11 +55,7 @@ class ConstructionStages
 			    (name, start_date, end_date, duration, durationUnit, color, externalId, status)
 			    VALUES (:name, :start_date, :end_date, :duration, :durationUnit, :color, :externalId, :status)
 			");
-		try{
-			$entity = new ConstructionStagesEntity($data);
-		}catch(\Exception $Exception){
-			return $Exception->getMessage();
-		}
+		$entity = new ConstructionStagesEntity($data);
 		$stmt->execute([
 			'name' => $entity->name,
 			'start_date' => $entity->startDate,
@@ -85,11 +81,7 @@ class ConstructionStages
 			'externalId',
 			'status',
 		];
-		try{
-			$entity = new ConstructionStagesEntity($data);
-		}catch(\Exception $Exception){
-			return $Exception->getMessage();
-		}
+		$entity = new ConstructionStagesEntity($data);
 		$fields = [];
 		$values = ['id' => $id];
 		foreach ($columns as $column) {

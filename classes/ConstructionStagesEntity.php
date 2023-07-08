@@ -12,21 +12,21 @@ class ConstructionStagesEntity {
 			{
 				if(!$this->$name($this->entity->$name))
 				{
-					throw new DomainException(__CLASS__ . ' Invalid : ' . $name);
+					throw new DomainException('Invalid : ' . $name);
 				}
 			}
 		}
 	}
 
-	protected function name($name): bool{
+	protected function name(string $name): bool{
 		return Validator::length($name, null, 255);
 	}
 
-	protected function startDate($startDate): bool{
+	protected function startDate(string $startDate): bool{
 		return Validator::datetimeofIso8601($startDate);
 	}
 
-	protected function endDate($endDate): bool{
+	protected function endDate(?string $endDate): bool{
 		if(is_null($endDate))
 		{
 			return true;
@@ -36,16 +36,16 @@ class ConstructionStagesEntity {
 		return $iso8601 && $later;
 	}
 
-	protected function duration($duration): bool{
+	protected function duration(?float $duration): bool{
 		return is_null($duration);
 	}
 
-	protected function durationUnit($durationUnit): bool{
+	protected function durationUnit(string $durationUnit): bool{
 		$list = ['HOURS', 'DAYS', 'WEEKS'];
 		return Validator::itemofList($durationUnit, $list);
 	}
 
-	protected function color($color): bool{
+	protected function color(?string $color): bool{
 		if(is_null($color))
 		{
 			return true;
@@ -53,7 +53,7 @@ class ConstructionStagesEntity {
 		return Validator::hexcodeofColor($color);
 	}
 
-	protected function externalId($externalId): bool{
+	protected function externalId(?string $externalId): bool{
 		if(is_null($externalId))
 		{
 			return true;
@@ -61,7 +61,7 @@ class ConstructionStagesEntity {
 		return Validator::length($externalId, null, 255);
 	}
 
-	protected function status($status): bool{
+	protected function status(string $status): bool{
 		$list = ['NEW', 'PLANNED', 'DELETED'];
 		return Validator::itemofList($status, $list);
 	}
