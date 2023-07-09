@@ -90,14 +90,16 @@ class Api {
 		$class = get_class($Throwable);
 		switch($class) {
 			case 'TypeError':
-				if(str_ends_with($trace[0]['class'], 'Entity'))
+				$function = trim($trace[0]['function'], '_');
+				$class = $trace[0]['class'] ?? '';
+				if(str_ends_with($trace[0]['class'] ?? '', 'Entity'))
 				{
 					http_response_code(400);
-					$error = $trace[0]['function'] . ' ' . preg_filter("#^.*?(must be of type.*), called in.*$#", '$1', $message);
+					$error = $function . ' ' . trim(preg_filter("#^.*?(must be of type.*), (?:called in|(.* returned)).*$#", '$1 $2', $message));
 				}
 				else
 				{
-					$error = 'Malformed Input in ' . $trace[0]['class'] . '::' . $trace[0]['function'];
+					$error = 'Invalid argument type in ' . ($class ? $class . '::' : '') . $function;
 				}
 				break;
 			case 'DomainException':
