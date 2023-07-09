@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * API Endpoint front controller
+ */
+
 require_once 'Autoloader.php';
 Autoloader::register();
 // Database is initialzed and populated than supplied to API class. This is necessary for automatic testing.
