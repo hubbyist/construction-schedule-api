@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class Database
 {
@@ -6,7 +7,7 @@ class Database
 
 	private $db;
 
-	public function init(string $path)
+	public function init(string $path): self
 	{
 		$this->db = new PDO('sqlite:' . $path . '/' . self::name . '.db', '', '', [
 			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -15,13 +16,13 @@ class Database
 		return $this;
 	}
 
-	private function createTables()
+	private function createTables(): void
 	{
 		$sql = file_get_contents(__DIR__ . '/../database/structure.sql');
 		$this->db->exec($sql);
 	}
 
-	public function populate()
+	public function populate(): void
 	{
 		$stmt = $this->db->query('SELECT 1 FROM construction_stages LIMIT 1');
 		if (!$stmt->fetchColumn()) {
@@ -29,19 +30,19 @@ class Database
 		}
 	}
 
-	private function loadData()
+	private function loadData(): void
 	{
 		$sql = file_get_contents(__DIR__ . '/../database/data.sql');
 		$this->db->exec($sql);
 	}
 
-	public function truncate()
+	public function truncate(): void
 	{
 		$sql = file_get_contents(__DIR__ . '/../database/truncate.sql');
 		$this->db->exec($sql);
 	}
 
-	public function getDb()
+	public function getDb(): PDO
 	{
 		return $this->db;
 	}
