@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * Complete "Validated" representation of ConstructionStagesEntity.
+ *
+ * NOTE : duration will be auto calculated by this Entity
+ */
 class ConstructionStagesEntity {
 
 	protected $entity;

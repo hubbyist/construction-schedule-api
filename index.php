@@ -85,6 +85,12 @@ class Api {
 		}
 	}
 
+	/**
+	 * Processes supplied Throwable and generates an error message that is suitable for end user response.
+	 *
+	 * @param Throwable $Throwable
+	 * @return string
+	 */
 	protected function error(Throwable $Throwable): string{
 		$trace = $Throwable->getTrace();
 		$message = $Throwable->getMessage();

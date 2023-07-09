@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Complete "Unvalidated" representation of ConstructionStagesEntity.
+ *
+ * IMPORTANT : Use only for ConstructionStagesEntity initialization.
+ * should not be used as a data source for any operation.
+ */
 class ConstructionStagesCreate
 {
 	public $name;
