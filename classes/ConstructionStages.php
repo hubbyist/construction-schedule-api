@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * ConstructionStages collection actions controller
+ */
 class ConstructionStages
 {
 	private $db;
@@ -10,6 +13,11 @@ class ConstructionStages
 		$this->db = Api::getDb();
 	}
 
+	/**
+	 * Get all construction_stages records
+	 *
+	 * @return array
+	 */
 	public function getAll(): array
 	{
 		$stmt = $this->db->prepare("
@@ -29,6 +37,12 @@ class ConstructionStages
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Get one construction_stages record by id
+	 *
+	 * @param int $id
+	 * @return array
+	 */
 	public function getSingle(int $id): array
 	{
 		$stmt = $this->db->prepare("
@@ -49,6 +63,12 @@ class ConstructionStages
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Create one construction_stages record
+	 *
+	 * @param ConstructionStagesCreate $data
+	 * @return array
+	 */
 	public function post(ConstructionStagesCreate $data): array
 	{
 		$stmt = $this->db->prepare("
@@ -70,6 +90,15 @@ class ConstructionStages
 		return $stmt->rowCount() ? $this->getSingle((int) $this->db->lastInsertId()) : false;
 	}
 
+	/**
+	 * Modify one construction_stages record by id using supplied data
+	 *
+	 * NOTE : returns false if UPDATE does not succeed.
+	 *
+	 * @param ConstructionStagesModify $data
+	 * @param int $id
+	 * @return array|false
+	 */
 	public function patch(ConstructionStagesModify $data, int $id): array|false
 	{
 		$columns = [
@@ -100,6 +129,12 @@ class ConstructionStages
 		return $stmt->rowCount() ? $this->getSingle($id) : false;
 	}
 
+	/**
+	 * Soft delete one construction_stages record by id
+	 *
+	 * @param int $id
+	 * @return bool
+	 */
 	public function delete(int $id): bool
 	{
 		$stmt = $this->db->prepare("
