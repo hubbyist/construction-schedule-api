@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 class ConstructionStages
 {
@@ -9,7 +10,7 @@ class ConstructionStages
 		$this->db = Api::getDb();
 	}
 
-	public function getAll()
+	public function getAll(): array
 	{
 		$stmt = $this->db->prepare("
 			SELECT
@@ -28,7 +29,7 @@ class ConstructionStages
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function getSingle(int $id)
+	public function getSingle(int $id): array
 	{
 		$stmt = $this->db->prepare("
 			SELECT
@@ -48,7 +49,7 @@ class ConstructionStages
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	public function post(ConstructionStagesCreate $data)
+	public function post(ConstructionStagesCreate $data): array
 	{
 		$stmt = $this->db->prepare("
 			INSERT INTO construction_stages
@@ -69,7 +70,7 @@ class ConstructionStages
 		return $this->getSingle($this->db->lastInsertId());
 	}
 
-	public function patch(ConstructionStagesModify $data, int $id)
+	public function patch(ConstructionStagesModify $data, int $id): array|false
 	{
 		$columns = [
 			'name',
@@ -99,7 +100,7 @@ class ConstructionStages
 		return $stmt->rowCount() ? $this->getSingle($id) : false;
 	}
 
-	public function delete(int $id)
+	public function delete(int $id): bool
 	{
 		$stmt = $this->db->prepare("
 			UPDATE construction_stages
