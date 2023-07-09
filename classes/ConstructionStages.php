@@ -67,7 +67,7 @@ class ConstructionStages
 			'externalId' => $entity->externalId,
 			'status' => $entity->status,
 		]);
-		return $this->getSingle($this->db->lastInsertId());
+		return $stmt->rowCount() ? $this->getSingle((int) $this->db->lastInsertId()) : false;
 	}
 
 	public function patch(ConstructionStagesModify $data, int $id): array|false

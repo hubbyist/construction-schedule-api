@@ -71,6 +71,10 @@ class Api {
 							$data = json_decode(file_get_contents('php://input'));
 							$params = [new $target['bodyType']($data)];
 						}
+						if($matches[0] ?? null && in_array($httpVerb, ['get', 'patch', 'delete']))
+						{
+							$matches[0] = (int) $matches[0];
+						}
 						$params = array_merge($params, $matches);
 						$response = call_user_func_array([new $target['class'], $target['method']], $params);
 						break;
