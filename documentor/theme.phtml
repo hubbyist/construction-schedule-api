@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title><?= $title ?></title>
+		<meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1.0">
+		<base href="<?= $basepath ?? '' ?>"/>
+		<link rel="stylesheet" type="text/css" href="theme.css"/>
+	</head>
+	<body>
+		<main>
+			<h2><?= $title ?></h2>
+			<?php foreach($blocks as $block): ?>
+				<div>
+					<pre><?= trim($block['signature']) ?></pre>
+					<?php foreach($block['documentation'] as $comment): ?>
+						<p>
+							<?php if(is_array($comment)): ?>
+								<strong><?= $comment[0] ?></strong> : <span><?= $comment[1] ?></span>
+							<?php else: ?>
+								<span><?= $comment ?></span>
+							<?php endif; ?>
+						</p>
+					<?php endforeach; ?>
+				</div>
+			<?php endforeach; ?>
+			<?php if(is_array($toc ?? null)): ?>
+			<div>
+				<?php include __DIR__ . '/toc.phtml';?>
+			</div>
+			<?php else: ?>
+			<div>
+				<a href="index.html">[Back]</a>
+			</div>
+			<?php endif; ?>
+		</main>
+	</body>
+</html>
