@@ -23,7 +23,7 @@ $testsfolder = __DIR__ . '/tests/';
 $prefix_supplied = '.supplied.json';
 $prefix_expected = '.expected.txt';
 
-$pattern = str_replace('.', '', '*/*/*');
+$pattern = str_replace('.', '', $argv[1] ?? '*/*/*');
 
 $tester = new Tester($apiurl, $testsfolder, $prefix_supplied, $prefix_expected, $pattern);
 
