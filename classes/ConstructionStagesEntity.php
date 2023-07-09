@@ -4,6 +4,9 @@ declare(strict_types=1);
 class ConstructionStagesEntity {
 
 	protected $entity;
+	protected $computeds = [
+		'duration',
+	];
 
 	public function __construct(ConstructionStagesCreate|ConstructionStagesModify $entity){
 		$this->entity = $entity;
@@ -15,6 +18,12 @@ class ConstructionStagesEntity {
 				{
 					throw new DomainException('Invalid : ' . $name);
 				}
+			}
+		}
+		foreach($this->computeds as $name){
+			if(method_exists($this, "_{$name}_"))
+			{
+				$this->{"_{$name}_"}();
 			}
 		}
 	}
@@ -73,5 +82,18 @@ class ConstructionStagesEntity {
 
 	public function __isset($var){
 		return isset($this->entity->$var);
+	}
+
+	protected function _duration_(): void{
+		if(!is_null($this->entity->endDate))
+		{
+			$divisor = match($this->entity->durationUnit) {
+				'HOURS' => 1,
+				'DAYS' => 24,
+				'WEEKS' => 24 * 7,
+			};
+			$difference = floor((strtotime($this->entity->endDate) - strtotime($this->entity->startDate)) / 3600);
+			$this->entity->duration = round($difference / $divisor, 1);
+		}
 	}
 }
