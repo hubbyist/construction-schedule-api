@@ -12,7 +12,7 @@ class Validator {
 	static function datetimeofIso8601(string $datetime): bool{
 		if(preg_match('#^([1-9][0-9]{3})-([0-1][0-9])-([0-3][0-9]|31)T([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])Z$#', $datetime, $matches))
 		{
-			if(checkdate($matches[2], $matches[3], $matches[1]))
+			if(checkdate((int) $matches[2], (int) $matches[3], (int) $matches[1]))
 			{
 				return true;
 			}
