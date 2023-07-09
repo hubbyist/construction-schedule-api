@@ -7,8 +7,8 @@ Content-Type: application/json
         "name": "",
         "startDate": "2023-02-28T19:59:24Z",
         "endDate": "2024-02-29T19:59:24Z",
-        "duration": 366,
-        "durationUnit": "DAYS",
+        "duration": 52.3,
+        "durationUnit": "WEEKS",
         "color": null,
         "externalId": null,
         "status": "NEW"
