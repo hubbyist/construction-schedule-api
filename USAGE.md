@@ -13,7 +13,9 @@ TESTING
 -------
 
 You can run tests using PHP built-in server on port 4000.
+
 IMPORTANT: Run test server in testing folder to prevent evaluation database erasure.
+
 NOTE: Tests will not run on evaluation port.
 
 ```
