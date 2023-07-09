@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once 'Autoloader.php';
 Autoloader::register();
+// Database is initialzed and populated than supplied to API class. This is necessary for automatic testing.
 $database = (new Database())->init($path ?? __DIR__);
 if($populate ?? true){
 	$database->populate();
@@ -84,7 +85,7 @@ class Api {
 		}
 	}
 
-	protected function error(Throwable $Throwable){
+	protected function error(Throwable $Throwable): string{
 		$trace = $Throwable->getTrace();
 		$message = $Throwable->getMessage();
 		$class = get_class($Throwable);
