@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Database</title>
+		<meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1.0">
+		<base href=""/>
+		<link rel="stylesheet" type="text/css" href="theme.css"/>
+	</head>
+	<body>
+		<main>
+			<h2>Database</h2>
+							<div>
+					<pre>class Database</pre>
+											<p>
+															<span>Sqlite database operations management class.</span>
+													</p>
+											<p>
+															<strong>NOTE</strong> : <span>default database name is 'testDb'</span>
+													</p>
+									</div>
+							<div>
+					<pre>public function init(string $path): self</pre>
+											<p>
+															<span>Initialize a sqlite database in the given path with the default name.</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>string $path</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>self</span>
+													</p>
+									</div>
+							<div>
+					<pre>private function createTables(): void</pre>
+											<p>
+															<span>Creates database tables using structure.sql file in database folder.</span>
+													</p>
+											<p>
+															<strong>IMPORTANT</strong> : <span>structure.sql should contain only CREATE TABLE commands</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>void</span>
+													</p>
+									</div>
+							<div>
+					<pre>public function populate(): void</pre>
+											<p>
+															<span>Populates database tables if database is empty.</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>void</span>
+													</p>
+									</div>
+							<div>
+					<pre>private function loadData(): void</pre>
+											<p>
+															<span>Inserts table data using data.sql file in database folder.</span>
+													</p>
+											<p>
+															<strong>IMPORTANT</strong> : <span>data.sql should contain only INSERT commands</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>void</span>
+													</p>
+									</div>
+							<div>
+					<pre>public function truncate(): void</pre>
+											<p>
+															<span>Inserts table data using truncate.sql file in database folder.</span>
+													</p>
+											<p>
+															<strong>IMPORTANT</strong> : <span>truncate.sql should contain only DELETE commands</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>void</span>
+													</p>
+									</div>
+							<div>
+					<pre>public function getDb(): PDO</pre>
+											<p>
+															<span>Returns PDO handler for the database in its current state.</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>PDO</span>
+													</p>
+									</div>
+									<div>
+				<a href="index.html">[Back]</a>
+			</div>
+					</main>
+	</body>
+</html>

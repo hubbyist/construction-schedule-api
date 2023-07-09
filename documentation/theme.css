@@ -1,0 +1,53 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+html, body{
+	min-height: 100%;
+	color: whitesmoke;
+	padding: 0;
+	margin: 0;
+}
+body main{
+	width: 80vw;
+	background-color: cadetblue;
+	padding: 1em;
+	margin: 0 auto;
+	min-height: 100%;
+}
+
+main div{
+	background-color: seagreen;
+	padding: 1em;
+}
+
+main pre{
+	background-color: black;
+	border: 0.1em solid darkolivegreen;
+	padding: 1em;
+	margin-bottom: 1em;
+}
+main p {
+	padding: 0 1em;
+}
+main h1{
+	font-size: 1.6em;
+	margin-bottom: 1em;
+}
+main h2{
+	font-size: 1.2em;
+	margin: 1em;
+}
+main pre, main p{
+	font-size: 1em;
+}
+
+
+main p + p {
+	margin-top: 1em;
+}
+
+main ul{
+	padding: 1em;
+	list-style-position: inside;
+}

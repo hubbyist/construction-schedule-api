@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Validator</title>
+		<meta name="viewport" content="width=device-width,user-scalable=yes,initial-scale=1.0">
+		<base href=""/>
+		<link rel="stylesheet" type="text/css" href="theme.css"/>
+	</head>
+	<body>
+		<main>
+			<h2>Validator</h2>
+							<div>
+					<pre>static function length(string $text, ?int $minimum = null, ?int $maximum = null): bool</pre>
+											<p>
+															<span>Validates string length is longer than minimum and shorter than maximum.</span>
+													</p>
+											<p>
+															<strong>NOTE</strong> : <span>when null is supplied as limit respective check is skipped and assumed successful</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>string $text</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>?int $minimum = null</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>?int $maximum = null</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>bool</span>
+													</p>
+									</div>
+							<div>
+					<pre>static function datetimeofIso8601(string $datetime): bool</pre>
+											<p>
+															<span>Validates string is in Iso8601 format.</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>string $datetime</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>bool</span>
+													</p>
+									</div>
+							<div>
+					<pre>static function numericallybigger(string $subject, string $criteria): bool</pre>
+											<p>
+															<span>Validates digits in the subject string are bigger than the digits in the criteria criteria.</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>string $subject</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>string $criteria</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>bool</span>
+													</p>
+									</div>
+							<div>
+					<pre>static function itemofList(mixed $item, array $list = []): bool</pre>
+											<p>
+															<span>Validates item is in the given list of items.</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>mixed $item,string</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>array $list = []</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>bool</span>
+													</p>
+									</div>
+							<div>
+					<pre>static function hexcodeofColor(string $code): bool</pre>
+											<p>
+															<span>Validates string is composed of six hexadecimal digits preceded by a single '#' character.</span>
+													</p>
+											<p>
+															<strong>param</strong> : <span>string $code</span>
+													</p>
+											<p>
+															<strong>return</strong> : <span>bool</span>
+													</p>
+									</div>
+									<div>
+				<a href="index.html">[Back]</a>
+			</div>
+					</main>
+	</body>
+</html>
