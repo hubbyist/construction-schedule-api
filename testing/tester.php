@@ -23,9 +23,11 @@ $testsfolder = __DIR__ . '/tests/';
 $prefix_supplied = '.supplied.json';
 $prefix_expected = '.expected.txt';
 
-$pattern = str_replace('.', '', $argv[1] ?? '*/*/*');
+array_shift($argv);
+$patterns = $argv ?: ['*/*/*'];
+array_walk($patterns, function($pattern){return str_replace('.', '', $pattern);});
 
-$tester = new Tester($apiurl, $testsfolder, $prefix_supplied, $prefix_expected, $pattern);
+$tester = new Tester($apiurl, $testsfolder, $prefix_supplied, $prefix_expected, $patterns);
 
 require_once 'Autoloader.php';
 Autoloader::register();
@@ -47,25 +49,27 @@ class Tester {
 	protected $testsfolder;
 	protected $prefix_supplied;
 	protected $prefix_expected;
-	protected $pattern;
+	protected $patterns;
 	protected $results = [];
 
-	public function __construct(string $apiurl, string $testsfolder, string $prefix_supplied, string $prefix_expected, string $pattern){
+	public function __construct(string $apiurl, string $testsfolder, string $prefix_supplied, string $prefix_expected, array $patterns){
 		$this->apiurl = $apiurl;
 		$this->testsfolder = $testsfolder;
 		$this->prefix_supplied = $prefix_supplied;
 		$this->prefix_expected = $prefix_expected;
-		$this->pattern = $pattern;
+		$this->patterns = $patterns;
 	}
 
 	public function runTests(?callable $beforeeachtest){
-		$tests = glob($this->testsfolder . $this->pattern . $this->prefix_supplied);
-		foreach($tests as $test){
-			if($beforeeachtest){
-				$beforeeachtest();
+		foreach($this->patterns as $pattern){
+			$tests = glob($this->testsfolder . $pattern . $this->prefix_supplied);
+			foreach($tests as $test){
+				if($beforeeachtest){
+					$beforeeachtest();
+				}
+				$route = str_replace([$this->testsfolder, $this->prefix_supplied], '', $test);
+				$this->results[$route] = $this->runTest($route);
 			}
-			$route = str_replace([$this->testsfolder, $this->prefix_supplied], '', $test);
-			$this->results[$route] = $this->runTest($route);
 		}
 		return $this->results;
 	}
