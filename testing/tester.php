@@ -29,8 +29,6 @@ array_walk($patterns, function($pattern){return str_replace('.', '', $pattern);}
 
 $tester = new Tester($apiurl, $testsfolder, $prefix_supplied, $prefix_expected, $patterns);
 
-require_once 'Autoloader.php';
-Autoloader::register();
 $results = $tester->runTests();
 
 
@@ -58,6 +56,9 @@ class Tester {
 	}
 
 	public function runTests(){
+		if(file_exists("$this->testsfolder/before-all.php")){
+			include_once "$this->testsfolder/before-all.php";
+		}
 		foreach($this->patterns as $pattern){
 			$tests = glob($this->testsfolder . $pattern . $this->prefix_supplied);
 			foreach($tests as $test){
