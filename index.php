@@ -33,6 +33,7 @@ class Api {
 			':num' => '[0-9]+',
 		];
 		$routes = [
+			'head constructionStages' => null, //Head calls are always responded without a body
 			'get constructionStages' => [
 				'class' => 'ConstructionStages',
 				'method' => 'getAll',
@@ -57,9 +58,7 @@ class Api {
 			],
 		];
 
-		$response = [
-			'error' => 'No such route',
-		];
+		$response = null;
 
 		if ($uri) {
 
@@ -70,6 +69,10 @@ class Api {
 					{
 						$params = [];
 						array_shift($matches);
+						if(in_array($httpVerb, ['head'])){
+							$response = true;
+							break;
+						}
 						if(in_array($httpVerb, ['post', 'patch']))
 						{
 							$data = json_decode(file_get_contents('php://input'));
@@ -86,6 +89,11 @@ class Api {
 				}
 			}catch(Throwable $Throwable) {
 				$response = ['error' => $this->error($Throwable)];
+			}
+
+			if(!$response){
+				http_response_code(400);
+				$response = ['error' => 'No such route'];
 			}
 
 			header('Content-Type: application/json');
