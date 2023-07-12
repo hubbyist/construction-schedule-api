@@ -60,9 +60,16 @@ class Tester {
 			include_once "$this->testsfolder/before-all.php";
 		}
 		foreach($this->patterns as $pattern){
-			$tests = glob($this->testsfolder . $pattern . $this->extensions['supplied']);
-			foreach($tests as $test){
-				$route = str_replace([$this->testsfolder, $this->extensions['supplied']], '', $test);
+			$tests = [];
+			foreach(['requested', 'supplied',] as $type){
+				$extension = $this->extensions[$type];
+				$files = glob($this->testsfolder . $pattern . $extension);
+				array_walk($files, function(&$file)use($extension) {
+					$file = str_replace([$this->testsfolder, $extension], '', $file);
+				});
+				array_push($tests, ...$files);
+			}
+			foreach($tests as $route){
 				$this->results[$route] = $this->runTest($route);
 			}
 		}
@@ -83,8 +90,11 @@ class Tester {
 				$$input = file_get_contents($this->testsfolder . $route . $extension);
 			}
 		}
-		$data = json_decode($supplied, true);
-		$response = callAPI(strtoupper($method), $this->apiurl . trim($requested ?? ''), null, $data);
+		if($supplied ?? false)
+		{
+			$data = json_decode($supplied, true);
+		}
+		$response = callAPI(strtoupper($method), $this->apiurl . trim($requested ?? ''), null, $data ?? null);
 		$received = $this->filterResponse($response);
 		$result = $expected === $received;
 		if(!$result)
