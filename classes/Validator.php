@@ -45,7 +45,12 @@ class Validator {
 	 */
 	static function numericallybigger(string $subject, string $criteria): bool{
 		$pattern = '#[^0-9]+#';
-		return preg_filter($pattern, '', $criteria) < preg_filter($pattern, '', $subject);
+		$subject_numerics = preg_filter($pattern, '', $subject);
+		$criteria_numerics = preg_filter($pattern, '', $criteria);
+		if (!is_numeric($criteria_numerics) || !is_numeric($subject_numerics)){
+			return false;
+		}
+		return $criteria_numerics < $subject_numerics;
 	}
 
 	/**
