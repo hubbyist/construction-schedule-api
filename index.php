@@ -58,7 +58,6 @@ class Api {
 			],
 		];
 
-		$response = null;
 
 		if ($uri) {
 
@@ -69,8 +68,9 @@ class Api {
 					{
 						$params = [];
 						array_shift($matches);
-						if(in_array($httpVerb, ['head'])){
-							$response = true;
+						if(in_array($httpVerb, ['head']))
+						{
+							$response = '';
 							break;
 						}
 						if(in_array($httpVerb, ['post', 'patch']))
@@ -87,17 +87,28 @@ class Api {
 						break;
 					}
 				}
+
+				if(!isset($response))
+				{
+					http_response_code(400);
+					$response = ['error' => 'No such route'];
+				}
 			}catch(Throwable $Throwable) {
 				$response = ['error' => $this->error($Throwable)];
 			}
 
-			if(!$response){
-				http_response_code(400);
-				$response = ['error' => 'No such route'];
+			if(isset($response) && is_bool($response))
+			{
+				$code = match($response) {
+					null => 400,
+					false => 409,
+					true => 201,
+				};
+				http_response_code($code);
 			}
 
 			header('Content-Type: application/json');
-			echo json_encode($response, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) . "\n";
+			echo json_encode($response ?? null, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n";
 		}
 	}
 
