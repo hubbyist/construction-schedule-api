@@ -90,7 +90,7 @@ class ConstructionStagesEntity {
 	}
 
 	protected function _duration_(): void{
-		if(!is_null($this->entity->endDate))
+		if(!is_null($this->entity->endDate ?? null))
 		{
 			$divisor = match($this->entity->durationUnit) {
 				'HOURS' => 1,
