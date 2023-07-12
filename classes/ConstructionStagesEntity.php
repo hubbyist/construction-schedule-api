@@ -50,6 +50,9 @@ class ConstructionStagesEntity {
 		}
 		$iso8601 = Validator::datetimeofIso8601($endDate);
 		$startDate = $this->entity->startDate ?? $this->current->startDate;
+		if(!($startDate)){
+			return false;
+		}
 		$later = Validator::numericallybigger($endDate, $startDate);
 		return $iso8601 && $later;
 	}
