@@ -36,7 +36,10 @@ $results = $tester->runTests();
 
 echo "\nRESULTS \n";
 foreach($results as $route => $result){
-	echo str_pad($route, 60, ' ', STR_PAD_RIGHT) . ' : [' . var_export($result, true) . ']' . "\n";
+	$color = $result ? '1;37;42m' : '1;37;41m';
+	$status = var_export($result, true);
+	$padding = 70;
+	echo str_pad($route, $padding, ' ', STR_PAD_RIGHT) . ' : '."\e[{$color}[{$status}]\e[0m" . "\n";
 }
 
 class Tester {
