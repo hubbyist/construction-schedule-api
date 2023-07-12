@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+    {
+        "id": 1,
+        "name": "test",
+        "startDate": "2023-02-28T19:59:24Z",
+        "endDate": null,
+        "duration": null,
+        "durationUnit": "DAYS",
+        "color": null,
+        "externalId": null,
+        "status": "DELETED"
+    }
+]
