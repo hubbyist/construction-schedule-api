@@ -27,7 +27,7 @@ $extensions = [
 ];
 
 array_shift($argv);
-$patterns = $argv ?: ['*/*/*'];
+$patterns = $argv ?: ['*/*', '*/*/*'];
 array_walk($patterns, function($pattern){return str_replace('.', '', $pattern);});
 
 $tester = new Tester($apiurl, $testsfolder, $extensions, $patterns);
@@ -70,7 +70,8 @@ class Tester {
 	}
 
 	public function runTest($route){
-		list($method, $target, $subject) = explode('/', $route);
+		$target = explode('/', $route);
+		$method = array_shift($target);
 		if(!($this->beforeeach[$method] ?? false) && file_exists($this->testsfolder . "$method/before-each.php")){
 			$this->beforeeach[$method] = include_once $this->testsfolder . "$method/before-each.php";
 		}
