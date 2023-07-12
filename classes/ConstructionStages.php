@@ -102,22 +102,22 @@ class ConstructionStages
 	public function patch(ConstructionStagesModify $data, int $id): array|false
 	{
 		$columns = [
-			'name',
-			'start_date',
-			'end_date',
-			'duration',
-			'durationUnit',
-			'color',
-			'externalId',
-			'status',
+			'name' => 'name',
+			'start_date' => 'startDate',
+			'end_date' => 'endDate',
+			'duration' => 'duration',
+			'durationUnit' => 'durationUnit',
+			'color' => 'color',
+			'externalId' => 'externalId',
+			'status' => 'status',
 		];
 		$entity = new ConstructionStagesEntity($data);
 		$fields = [];
 		$values = ['id' => $id];
-		foreach ($columns as $column) {
-			if(isset($entity->$column)){
+		foreach ($columns as $column => $input) {
+			if(isset($entity->$input)){
 				$fields[] = "$column = :$column";
-				$values[] = $entity->{$column};
+				$values[] = $entity->{$input};
 			}
 		}
 		$stmt = $this->db->prepare("
