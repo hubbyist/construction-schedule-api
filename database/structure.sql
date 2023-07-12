@@ -5,7 +5,7 @@ create table if not exists construction_stages
     start_date   datetime                  not null,
     end_date     datetime,
     duration     float,
-    durationUnit varchar(50),
+    durationUnit varchar(50) default 'DAYS' not null,
     color        varchar(50),
     externalId   nvarchar(255),
     status       varchar(50) default 'NEW' not null
