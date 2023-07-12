@@ -20,17 +20,19 @@ if($response['status'] != 200)
 
 $testsfolder = __DIR__ . '/tests/';
 
-$prefix_supplied = '.supplied.json';
-$prefix_expected = '.expected.txt';
+$extensions = [
+	'requested' => '.requested.txt',
+	'supplied' => '.supplied.json',
+	'expected' => '.expected.txt',
+];
 
 array_shift($argv);
 $patterns = $argv ?: ['*/*/*'];
 array_walk($patterns, function($pattern){return str_replace('.', '', $pattern);});
 
-$tester = new Tester($apiurl, $testsfolder, $prefix_supplied, $prefix_expected, $patterns);
+$tester = new Tester($apiurl, $testsfolder, $extensions, $patterns);
 
 $results = $tester->runTests();
-
 
 echo "\nRESULTS \n";
 foreach($results as $route => $result){
@@ -41,17 +43,15 @@ class Tester {
 
 	protected $apiurl;
 	protected $testsfolder;
-	protected $prefix_supplied;
-	protected $prefix_expected;
+	protected $extensions;
 	protected $patterns;
 	protected $beforeeach = [];
 	protected $results = [];
 
-	public function __construct(string $apiurl, string $testsfolder, string $prefix_supplied, string $prefix_expected, array $patterns){
+	public function __construct(string $apiurl, string $testsfolder, array $extensions, array $patterns){
 		$this->apiurl = $apiurl;
 		$this->testsfolder = $testsfolder;
-		$this->prefix_supplied = $prefix_supplied;
-		$this->prefix_expected = $prefix_expected;
+		$this->extensions = $extensions;
 		$this->patterns = $patterns;
 	}
 
@@ -60,9 +60,9 @@ class Tester {
 			include_once "$this->testsfolder/before-all.php";
 		}
 		foreach($this->patterns as $pattern){
-			$tests = glob($this->testsfolder . $pattern . $this->prefix_supplied);
+			$tests = glob($this->testsfolder . $pattern . $this->extensions['supplied']);
 			foreach($tests as $test){
-				$route = str_replace([$this->testsfolder, $this->prefix_supplied], '', $test);
+				$route = str_replace([$this->testsfolder, $this->extensions['supplied']], '', $test);
 				$this->results[$route] = $this->runTest($route);
 			}
 		}
@@ -77,10 +77,13 @@ class Tester {
 		if(is_callable($this->beforeeach[$method] ?? false)){
 			($this->beforeeach[$method])();
 		}
-		$supplied = file_get_contents($this->testsfolder . $route . $this->prefix_supplied);
-		$expected = file_get_contents($this->testsfolder . $route . $this->prefix_expected);
+		foreach($this->extensions as $input => $extension){
+			if(file_exists($this->testsfolder . $route . $extension)){
+				$$input = file_get_contents($this->testsfolder . $route . $extension);
+			}
+		}
 		$data = json_decode($supplied, true);
-		$response = callAPI(strtoupper($method), $this->apiurl, null, $data);
+		$response = callAPI(strtoupper($method), $this->apiurl . trim($requested ?? ''), null, $data);
 		$received = $this->filterResponse($response);
 		$result = $expected === $received;
 		if(!$result)
