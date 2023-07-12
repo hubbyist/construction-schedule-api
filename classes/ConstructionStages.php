@@ -124,6 +124,9 @@ class ConstructionStages
 				$values[] = $entity->{$input};
 			}
 		}
+		if(!count($fields)){
+			return false;
+		}
 		$stmt = $this->db->prepare("
 			UPDATE construction_stages
 			SET " . implode(',', $fields) . "
