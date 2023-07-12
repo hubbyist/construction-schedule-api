@@ -9,12 +9,14 @@ declare(strict_types=1);
 class ConstructionStagesEntity {
 
 	protected $entity;
+	protected $current;
 	protected $computeds = [
 		'duration',
 	];
 
-	public function __construct(ConstructionStagesCreate|ConstructionStagesModify $entity){
+	public function __construct(ConstructionStagesCreate|ConstructionStagesModify $entity, ?array $current = []){
 		$this->entity = $entity;
+		$this->current = (object) ($current ?? []);
 		$vars = get_object_vars($this->entity);
 		foreach($vars as $name => $value){
 			if(method_exists($this, $name))
@@ -47,7 +49,8 @@ class ConstructionStagesEntity {
 			return true;
 		}
 		$iso8601 = Validator::datetimeofIso8601($endDate);
-		$later = Validator::numericallybigger($endDate, $this->entity->startDate);
+		$startDate = $this->entity->startDate ?? $this->current->startDate;
+		$later = Validator::numericallybigger($endDate, $startDate);
 		return $iso8601 && $later;
 	}
 
@@ -92,12 +95,14 @@ class ConstructionStagesEntity {
 	protected function _duration_(): void{
 		if(!is_null($this->entity->endDate ?? null))
 		{
-			$divisor = match($this->entity->durationUnit) {
+			$durationUnit = $this->entity->durationUnit ?? $this->current->durationUnit;
+			$divisor = match($durationUnit) {
 				'HOURS' => 1,
 				'DAYS' => 24,
 				'WEEKS' => 24 * 7,
 			};
-			$difference = floor((strtotime($this->entity->endDate) - strtotime($this->entity->startDate)) / 3600);
+			$startDate = $this->entity->startDate ?? $this->current->startDate;
+			$difference = floor((strtotime($this->entity->endDate) - strtotime($startDate)) / 3600);
 			$this->entity->duration = round($difference / $divisor, 1);
 		}
 	}

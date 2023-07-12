@@ -111,7 +111,11 @@ class ConstructionStages
 			'externalId' => 'externalId',
 			'status' => 'status',
 		];
-		$entity = new ConstructionStagesEntity($data);
+		$current = $this->getSingle($id)[0] ?? null;
+		if(!$current){
+			return false;
+		}
+		$entity = new ConstructionStagesEntity($data, $current);
 		$fields = [];
 		$values = ['id' => $id];
 		foreach ($columns as $column => $input) {
